@@ -75,13 +75,15 @@
    <!-- {% if img_src %}
      <img src="{{ img_src }}">
    {% endif %} -->
-  
-   {% if extracted_text %}
-     <p> The extracted text from the image above is: <br> {{ extracted_text }} </br></p>
-  
-   {% else %}
+    {% if extracted_text %}
+    <p> The extracted text from the image above is: <br> {{ extracted_text }} </br></p>
+ 
+    {% else %}
      The extracted text will be displayed here
-   {% endif %}
+    {% endif %}
+    
+    <!-- <a href="/display_items" class="btn btn-primary">Confirm list</a> -->
+   
 
 </div>
 </div>
