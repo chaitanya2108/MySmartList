@@ -16,8 +16,8 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
 
-list = []
-#global extracted_text
+voice_list = []
+extracted_text =[]
 
 @app.route('/')
 def index():
@@ -38,8 +38,9 @@ def result():
       for key,value in result.items():
              f = open("shopping_list.txt", "a")
              f.truncate(0)
-             list.append(value)             
-             f.write(str(list))
+             voice_list.append(value)             
+             f.write(str(voice_list))
+
       return render_template("result.html",result = result)
 
 # function to check the file extension
@@ -48,11 +49,10 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # route and function to handle the upload page
-@app.route('/upload', methods=['GET', 'POST'])
+@app.route('/ocr', methods=['GET', 'POST'])
 
 def upload_page():
     global extracted_text
-
     if request.method == 'POST':
         # check if there is a file in the request
         if 'file' not in request.files:
@@ -66,8 +66,9 @@ def upload_page():
 
             # call the OCR function on it
             extracted_text = ocr_core(file)
-            csvtohtml(extracted_text)
-            # extract the text and display it
+    
+            #extract the text and display it
+        
             return render_template('upload.html',
                                    extracted_text=extracted_text,
                                    img_src=UPLOAD_FOLDER + file.filename)
@@ -76,9 +77,9 @@ def upload_page():
 
 
 @app.route('/display_items')
-def csvtohtml(list_items):
+def csvtohtml():
     # list = ['apple']
-    webscraping(list_items)
+    #webscraping(extracted_text)
     df = pd.read_csv('consolidated.csv')
     return render_template('display.html', tables=[df.to_html()], titles=[''])
 

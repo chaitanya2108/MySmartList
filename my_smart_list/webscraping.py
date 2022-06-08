@@ -72,7 +72,7 @@ def amazon(search_term):
                 
     driver.close()
     #save data to csv file
-    with open('results2.csv', 'a', newline='', encoding='utf-8') as f:
+    with open('results2.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url'])
         writer.writerows (records)
@@ -128,7 +128,7 @@ def flipkart(search_term):
             records.append(record)
     #driver.close()
     #save data to csv file
-    with open('results1.csv', 'a', newline='', encoding='utf-8') as f:
+    with open('results1.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
         writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url'])
         writer.writerows (records)
@@ -156,6 +156,7 @@ def webscraping(list):
         flipkart(i)
         amazon(i)
         consolidate()
+        
         if list:
             continue
         else:
