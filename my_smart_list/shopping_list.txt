@@ -1,1 +1,1 @@
-['Apple', 'rice 10kg', 'Apple', "submit it won't go"]
+['mango']

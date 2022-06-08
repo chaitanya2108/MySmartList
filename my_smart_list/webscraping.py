@@ -9,7 +9,7 @@ import pandas as pd
 import glob
 import os
 from ocr_core import ocr_core
-from flask import Flask, redirect, render_template, request
+from flask import Flask, redirect, render_template, request, session
 
 app = Flask(__name__)
 
@@ -150,7 +150,8 @@ def consolidate():
     render_template('display.html')
 
 def webscraping(list):
-
+   #list = ['apple']
+    print("webscraping", session['ocr_list'])
     for i in list:
         print(i)
         flipkart(i)

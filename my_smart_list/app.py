@@ -7,6 +7,11 @@ from ocr_core import ocr_core
 from flask import Flask, render_template, request
 import pandas as pd
 from webscraping import webscraping
+from localStoragePy import localStoragePy
+from flask import session
+
+
+localStorage = localStoragePy('MySmartList', 'storage.txt')
 
 # define a folder to store and later serve the images
 UPLOAD_FOLDER = '/static/uploads/'
@@ -15,9 +20,11 @@ UPLOAD_FOLDER = '/static/uploads/'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
+app.secret_key = "super secret key"
 
 voice_list = []
 extracted_text =[]
+
 
 @app.route('/')
 def index():
@@ -29,6 +36,8 @@ def vr():
 
 @app.route('/result',methods = ['POST', 'GET'])
 def result():
+   global flag 
+   flag = 0 
    if request.method == 'POST':
       result = request.form
       # f = open("shooping_list.txt", "a")
@@ -41,6 +50,7 @@ def result():
              voice_list.append(value)             
              f.write(str(voice_list))
 
+      session['vr_list'] = voice_list
       return render_template("result.html",result = result)
 
 # function to check the file extension
@@ -53,6 +63,8 @@ def allowed_file(filename):
 
 def upload_page():
     global extracted_text
+    global flag 
+    flag  =1
     if request.method == 'POST':
         # check if there is a file in the request
         if 'file' not in request.files:
@@ -68,7 +80,9 @@ def upload_page():
             extracted_text = ocr_core(file)
     
             #extract the text and display it
-        
+            session['ocr_list'] = extracted_text
+            #localStorage.setItem("ocr", extracted_text)
+
             return render_template('upload.html',
                                    extracted_text=extracted_text,
                                    img_src=UPLOAD_FOLDER + file.filename)
@@ -78,8 +92,10 @@ def upload_page():
 
 @app.route('/display_items')
 def csvtohtml():
+    global flag
+    webscraping(session['ocr_list']) if flag==1 else webscraping(session['vr_list'])
     # list = ['apple']
-    #webscraping(extracted_text)
+    #webscraping(session['ocr_list'])
     df = pd.read_csv('consolidated.csv')
     return render_template('display.html', tables=[df.to_html()], titles=[''])
 
