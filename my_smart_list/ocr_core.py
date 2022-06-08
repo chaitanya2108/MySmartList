@@ -1,15 +1,17 @@
 from PIL import Image
 import pytesseract
 import re
+from autocorrect import autocorrect
 
 pytesseract.pytesseract.tesseract_cmd = "C:\\Program Files\\Tesseract-OCR\\tesseract.exe"
-res = []
+
 
 
 def ocr_core(filename):
     """
     This function will handle the core OCR processing of images.
     """
+    res = []
     text = pytesseract.image_to_string(Image.open(filename))  # We'll use Pillow's Image class to open the image and pytesseract to detect the string in the image
     
     #Cleaning the recognized text
@@ -29,8 +31,9 @@ def ocr_core(filename):
     with open("output.txt", "a") as f:
         print(text, file=f)
 
+    final_res = autocorrect(res)
 
-    return res
+    return final_res
 
 
 if __name__ == '_main_':
