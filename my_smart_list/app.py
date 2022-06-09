@@ -7,11 +7,11 @@ from ocr_core import ocr_core
 from flask import Flask, render_template, request
 import pandas as pd
 from webscraping import webscraping
-from localStoragePy import localStoragePy
+# from localStoragePy import localStoragePy
 from flask import session
 
 
-localStorage = localStoragePy('MySmartList', 'storage.txt')
+# localStorage = localStoragePy('MySmartList', 'storage.txt')
 
 # define a folder to store and later serve the images
 UPLOAD_FOLDER = '/static/uploads/'
@@ -64,7 +64,7 @@ def allowed_file(filename):
 def upload_page():
     global extracted_text
     global flag 
-    flag  =1
+    flag  = 1
     if request.method == 'POST':
         # check if there is a file in the request
         if 'file' not in request.files:
@@ -89,7 +89,46 @@ def upload_page():
     elif request.method == 'GET':
         return render_template('upload.html')
 
+def list_from_user():
+    return session['ocr_list'] if flag==1 else session['vr_list']
+    
+global actual_list 
+actual_list = session['ocr_list'] if flag==1 else session['vr_list']
 
+@app.route('/continueShopping')
+def continueShopping():
+    # webscraping()
+    for i in actual_list:
+        print("Type",type(actual_list), actual_list, i)
+        iterate(i)
+        actual_list.remove(i)
+        
+
+def iterate(shopping_item):
+    global flag
+    webscraping(shopping_item) 
+    if flag==1:
+        session['ocr_list'].remove(shopping_item)#remove(i)
+    else:
+        session['vr_list'] = session['vr_list'].remove(i)
+    df = pd.read_csv('consolidated.csv')
+    descriptionList = []
+    priceList = []
+    ratingList = []
+    reviewCountList = []
+    urlList = []
+    imageSRCList = []
+    count = len(df.index)
+    for ind in df.index:
+        descriptionList.append(df['Description'][ind])
+        priceList.append(df['Price'][ind])
+        ratingList.append(df['Rating'][ind])
+        reviewCountList.append(df['ReviewCount'][ind])
+        urlList.append(df['Url'][ind])
+        imageSRCList.append(df['Image src'][ind])
+    return render_template('continueShopping.html', descriptions=descriptionList, prices=priceList, ratings=ratingList, reviewCounts=reviewCountList, urls=urlList, imageSRCs=imageSRCList, count=count)
+        
+    
 @app.route('/display_items')
 def csvtohtml():
     global flag
