@@ -50,7 +50,7 @@ def extract_record_amazon(item):
         rating=''
         review_count=''
 
-    result= (description, price, rating, review_count, details_url,img)
+    result= (description, price, rating, review_count, details_url,img,"Amazon")
     return result
 
 def amazon(search_term):
@@ -75,7 +75,7 @@ def amazon(search_term):
     #save data to csv file
     with open('results2.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url', 'Image src'])
+        writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url', 'Image src','Website_Name'])
         writer.writerows (records)
 
 
@@ -113,7 +113,7 @@ def extract_record_type1(item):
     except AttributeError:
         rating= "N/A"
         rating_count= 0
-    result= (description, price, rating, rating_count, details_url,img )
+    result= (description, price, rating, rating_count, details_url,img,"Flipkart" )
     return result
 
 def extract_record_type2(actual_item):
@@ -138,7 +138,7 @@ def extract_record_type2(actual_item):
     except AttributeError:
         rating= "N/A"
         rating_count= 0
-    result= (description, price, rating, rating_count, details_url,img )
+    result= (description, price, rating, rating_count, details_url,img,"Flipkart")
     return result
 
 def flipkart(search_term):
@@ -168,7 +168,7 @@ def flipkart(search_term):
     #save data to csv file
     with open('results1.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url', 'Image src'])
+        writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url', 'Image src','Website_Name'])
         writer.writerows (records)
 
 def consolidate():

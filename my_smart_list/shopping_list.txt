@@ -1,1 +1,1 @@
-['potato 1kg']
+['rice 10kg', 'rice 10kg', 'Apple']

@@ -24,7 +24,8 @@ app.secret_key = "super secret key"
 
 voice_list = []
 extracted_text =[]
-
+flag = 0
+count = 0
 
 @app.route('/')
 def index():
@@ -51,7 +52,7 @@ def result():
              f.write(str(voice_list))
 
       session['vr_list'] = voice_list
-      return render_template("result.html",result = result)
+      return render_template("result.html",result = result, voice_list = voice_list)
 
 # function to check the file extension
 def allowed_file(filename):
@@ -89,28 +90,23 @@ def upload_page():
     elif request.method == 'GET':
         return render_template('upload.html')
 
-def list_from_user():
-    return session['ocr_list'] if flag==1 else session['vr_list']
-    
-global actual_list 
-actual_list = session['ocr_list'] if flag==1 else session['vr_list']
+def list_from_user(count):
+    global flag
+    print("list user", count)
+    actual_list = session['ocr_list'] if flag==1 else session['vr_list']
+    return actual_list[count]
+    #return session['ocr_list'] if flag==1 else session['vr_list']
+
 
 @app.route('/continueShopping')
-def continueShopping():
-    # webscraping()
-    for i in actual_list:
-        print("Type",type(actual_list), actual_list, i)
-        iterate(i)
-        actual_list.remove(i)
-        
 
-def iterate(shopping_item):
-    global flag
-    webscraping(shopping_item) 
-    if flag==1:
-        session['ocr_list'].remove(shopping_item)#remove(i)
-    else:
-        session['vr_list'] = session['vr_list'].remove(i)
+def continueShopping():
+    global count
+    print("before webscraping", count)
+    actual_list = list_from_user(count)
+    count += 1
+    print(count,  "after inc")
+    webscraping(actual_list) 
     df = pd.read_csv('consolidated.csv')
     descriptionList = []
     priceList = []
@@ -118,7 +114,7 @@ def iterate(shopping_item):
     reviewCountList = []
     urlList = []
     imageSRCList = []
-    count = len(df.index)
+    card_view_count = len(df.index)
     for ind in df.index:
         descriptionList.append(df['Description'][ind])
         priceList.append(df['Price'][ind])
@@ -126,9 +122,9 @@ def iterate(shopping_item):
         reviewCountList.append(df['ReviewCount'][ind])
         urlList.append(df['Url'][ind])
         imageSRCList.append(df['Image src'][ind])
-    return render_template('continueShopping.html', descriptions=descriptionList, prices=priceList, ratings=ratingList, reviewCounts=reviewCountList, urls=urlList, imageSRCs=imageSRCList, count=count)
+    return render_template('continueShopping.html', descriptions=descriptionList, prices=priceList, ratings=ratingList, reviewCounts=reviewCountList, urls=urlList, imageSRCs=imageSRCList, count=card_view_count)
         
-    
+
 @app.route('/display_items')
 def csvtohtml():
     global flag
