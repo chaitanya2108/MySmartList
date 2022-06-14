@@ -28,8 +28,6 @@ def ocr_core(filename):
     while("" in res):
         res.remove("")
 
-    with open("output.txt", "a") as f:
-        print(text, file=f)
 
     final_res = autocorrect(res)
 
