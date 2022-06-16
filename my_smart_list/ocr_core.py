@@ -13,10 +13,11 @@ def ocr_core(filename):
     """
     res = []
     text = pytesseract.image_to_string(Image.open(filename))  # We'll use Pillow's Image class to open the image and pytesseract to detect the string in the image
-    
+    print(text)
     #Cleaning the recognized text
 
     cleaned_text = re.sub("[\([{}/\"“'^%*#)\]$!@&|()]","",text)  
+
     listRes = list(cleaned_text.split("\n"))
     while("" in listRes):
         listRes.remove("")
@@ -28,7 +29,7 @@ def ocr_core(filename):
     while("" in res):
         res.remove("")
 
-
+    print(res)
     final_res = autocorrect(res)
 
     return final_res

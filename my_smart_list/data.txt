@@ -54,7 +54,7 @@ maida
 paprika
 pepper
 chickpeas
-lentis
+lentils
 mustard
 apple
 banana
@@ -98,12 +98,28 @@ cereal
 cerelac
 rice
 lettuce
-
-
-
-
-
-
+toothpaste
+detergent
+Sanitary napkins 
+Diapers 
+Soaps 
+Surface cleaners 
+disinfectants 
+Body wash 
+shampoo
+Tissue papers
+tea
+coffee 
+paneer
+conditioner
+eggs
+bread
+milk
+asparagas
+bacon
+fish
+turkey
+salmon
 
 
 
