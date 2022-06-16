@@ -1,1 +1,1 @@
-['apple', 'banana', 'apple']
+['lettuce', 'apple', 'apple', 'apple', 'banana', 'banana']

@@ -153,10 +153,11 @@
                   </div> -->
                   <!-- <i class="fa-brands fa-amazon"></i> -->
                   <small class="text-muted">{{reviewCounts[i]}}</small>
-                  <!-- {% if WebsiteNames[i] == "Amazon" %}
+                  {% if WebsiteNames[i] == "Amazon" %}
                     <img src="../static/icons/amazon-brands.svg" width="25px" height="25px" alt="amazon logo">
-                  <img src="../static/icons/1217101_flipkart_icon.svg" width="25px" height="25px" alt="flipkart logo">
-                  {% endif %} -->
+                  {% else %}
+                    <img src="../static/icons/1217101_flipkart_icon.svg" width="25px" height="25px" alt="flipkart logo">
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -303,8 +304,6 @@
     <p class="float-end mb-1">
       <a href="#">Back to top</a>
     </p>
-    <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-    <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a href="/docs/5.2/getting-started/introduction/">getting started guide</a>.</p>
   </div>
 </footer>
 
