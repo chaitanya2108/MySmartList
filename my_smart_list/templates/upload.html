@@ -67,8 +67,9 @@
         <h1>Upload new File</h1>
   
     <form method=post enctype=multipart/form-data>
-        <p><input type=file name=file>
-        <input type=submit value=Upload>
+        <!-- <button type="button" >Info</button> -->
+        <p><input class="btn btn-secondary" type=file name=file>
+        <input class="btn btn-secondary" type=submit value=Upload>
     </form>
 
    <h1>Result:</h1>
@@ -76,7 +77,14 @@
      <img src="{{ img_src }}">
    {% endif %} -->
     {% if extracted_text %}
-    <p> The extracted text from the image above is: <br> {{ extracted_text }} </br></p>
+    <p> The extracted text from the image above is: 
+    <!-- <br> {{ extracted_text }} </br></p> -->
+    <ul>
+      {% for i in extracted_text %}
+      {% print(extracted_text[i]) %}
+      <li>{{i}}</li>
+      {% endfor %}
+    </ul>
  
     {% else %}
      The extracted text will be displayed here
@@ -84,7 +92,7 @@
     
     <!-- <a href="/display_items" class="btn btn-primary">Confirm list</a> -->
    
-    <button onclick="window.location.href='/continueShopping'">Click me</button>
+    <button class="btn btn-info" onclick="window.location.href='/continueShopping'">View Choices</button>
 </div>
 </div>
 </section>

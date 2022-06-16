@@ -114,6 +114,7 @@ def continueShopping():
     reviewCountList = []
     urlList = []
     imageSRCList = []
+    WebsiteNameList = []
     card_view_count = len(df.index)
     for ind in df.index:
         descriptionList.append(df['Description'][ind])
@@ -122,7 +123,8 @@ def continueShopping():
         reviewCountList.append(df['ReviewCount'][ind])
         urlList.append(df['Url'][ind])
         imageSRCList.append(df['Image src'][ind])
-    return render_template('continueShopping.html', descriptions=descriptionList, prices=priceList, ratings=ratingList, reviewCounts=reviewCountList, urls=urlList, imageSRCs=imageSRCList, count=card_view_count)
+        WebsiteNameList.append(df['Website_Name'][ind])
+    return render_template('continueShopping.html', descriptions=descriptionList, prices=priceList, ratings=ratingList, reviewCounts=reviewCountList, urls=urlList, imageSRCs=imageSRCList, count=card_view_count, WebsiteNames=WebsiteNameList)
         
 
 @app.route('/display_items')
