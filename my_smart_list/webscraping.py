@@ -123,7 +123,10 @@ def extract_record_type2(actual_item):
     #img
     img= item.div.div.div.div.img.get('src')
     #desc
-    description= item.findChildren("div")[9].div.div.text.strip()
+    try:
+     description= item.findChildren("div")[9].div.div.text.strip()
+    except AttributeError:
+        return None
 
     try:
         price= item.findChildren("div")[15].div.div.div.text.strip()
@@ -185,7 +188,6 @@ def consolidate():
     df1 = df[df['Rating'].notna()]
     df1.to_csv('consolidated.csv')
     print(df1)
-    render_template('display.html')
 
 def webscraping(list):
        #list = ['apple']

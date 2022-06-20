@@ -31,11 +31,11 @@ count = 0
 def index():
     return render_template('index.html')
 
-@app.route('/vr')
+@app.route('/voice-input')
 def vr():
     return render_template('vr.html')
 
-@app.route('/result',methods = ['POST', 'GET'])
+@app.route('/voice-input-list',methods = ['POST', 'GET'])
 def result():
    global flag 
    flag = 0 
@@ -60,7 +60,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # route and function to handle the upload page
-@app.route('/ocr', methods=['GET', 'POST'])
+@app.route('/handwritten-text-img', methods=['GET', 'POST'])
 
 def upload_page():
     global extracted_text
@@ -94,11 +94,13 @@ def list_from_user(count):
     global flag
     print("list user", count)
     actual_list = session['ocr_list'] if flag==1 else session['vr_list']
+    if actual_list[count] == "":
+        return render_template('index.html')
     return actual_list[count]
     #return session['ocr_list'] if flag==1 else session['vr_list']
 
 
-@app.route('/continueShopping')
+@app.route('/recommended-results')
 
 def continueShopping():
     global count
@@ -127,14 +129,14 @@ def continueShopping():
     return render_template('continueShopping.html', descriptions=descriptionList, prices=priceList, ratings=ratingList, reviewCounts=reviewCountList, urls=urlList, imageSRCs=imageSRCList, count=card_view_count, WebsiteNames=WebsiteNameList)
         
 
-@app.route('/display_items')
-def csvtohtml():
-    global flag
-    webscraping(session['ocr_list']) if flag==1 else webscraping(session['vr_list'])
-    # list = ['apple']
-    #webscraping(session['ocr_list'])
-    df = pd.read_csv('consolidated.csv')
-    return render_template('display.html', tables=[df.to_html()], titles=[''])
+# @app.route('/display_items')
+# def csvtohtml():
+#     global flag
+#     webscraping(session['ocr_list']) if flag==1 else webscraping(session['vr_list'])
+#     # list = ['apple']
+#     #webscraping(session['ocr_list'])
+#     df = pd.read_csv('consolidated.csv')
+#     return render_template('display.html', tables=[df.to_html()], titles=[''])
 
 	
 if __name__ == '__main__':
