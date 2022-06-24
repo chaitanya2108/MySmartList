@@ -188,6 +188,7 @@ def consolidate():
     df1 = df[df['Rating'].notna()]
     df1.to_csv('consolidated.csv')
     print(df1)
+  
 
 def webscraping(list):
        #list = ['apple']
