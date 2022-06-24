@@ -108,7 +108,7 @@ def continueShopping():
     actual_list = list_from_user(count)
     count += 1
     print(count,  "after inc")
-    webscraping(actual_list) 
+    # webscraping(actual_list) 
     df = pd.read_csv('consolidated.csv')
     descriptionList = []
     priceList = []

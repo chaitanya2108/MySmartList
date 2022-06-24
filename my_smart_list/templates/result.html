@@ -103,19 +103,21 @@
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Speech to Text Converter</h1>
-        <p class="lead text-muted">Speech Input To Text Result</p>
+        <h1 class="fw-light">Your shopping list items are: </h1>
+        <!-- <p class="lead text-muted">Speech Input To Text Result</p> -->
         <div id="result" align="center">
-          <button type="button" class="btn btn-secondary more_items" onclick="window.location.href='/voice-input'">Record More Items?</button>
+          
           <!-- <a href="{{ url_for('vr') }}">Add more items to list</a> -->
-          <br>
-            <p> SPEECH TEXT: </p>
-            <ul>
+            <!-- <p> Your Shopping List items are: </p> -->
+            <br>
             {% for i in voice_list %}
-                <li>{{ i }}</li>
+                <p>{{ i }}</p>
+            
             {% endfor %}
-            </ul>
-          <button type="button" class="btn btn-info view_button" onclick="window.location.href='/recommended-results'">View Choices</button>
+            <br>
+          <button type="button" class="btn btn-secondary more_items" onclick="window.location.href='/voice-input'">Record More Items?</button>
+          <br>
+          <button type="button" class="btn btn-info view_button" onclick="window.location.href='/recommended-results'">Recommended Deals</button>
           <!-- <a href="{{ url_for('continueShopping') }}">Do you want to continue shopping?</a> -->
         </div>
       </div>

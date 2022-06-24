@@ -66,27 +66,27 @@
    <section class="py-5 text-center container"  style="background-color: #E8F9FD;">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1>Upload new File</h1>
-  
+        <h2>Upload your shopping list image</h2>
+  <br>
     <form method=post enctype=multipart/form-data>
         <!-- <button type="button" >Info</button> -->
         <p><input class="btn btn-secondary" type=file name=file>
         <input class="btn btn-secondary" type=submit value=Upload>
     </form>
-
-   <h1>Result:</h1>
+<br>
+   <h2>Your list items are:</h2>
    <!-- {% if img_src %}
      <img src="{{ img_src }}">
    {% endif %} -->
     {% if extracted_text %}
-    <p> The extracted text from the image above is: 
+    <!-- <p> The extracted shopping list from the image is:  -->
     <!-- <br> {{ extracted_text }} </br></p> -->
-    <ul>
+   
       {% for i in extracted_text %}
       {% print(extracted_text[i]) %}
-      <li>{{i}}</li>
+     <p>{{i}}</p>
       {% endfor %}
-    </ul>
+  
  
     {% else %}
      The extracted text will be displayed here

@@ -1,1 +1,1 @@
-['Apple']
+['Mango', 'Noodles', 'Sugar', 'Water bottle', 'Towels', 'Whiteboard marker']
