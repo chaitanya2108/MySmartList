@@ -10,3 +10,22 @@
 body{
     background-color: #E8F9FD;
 }
+
+.home-page-btn{
+    position: absolute;
+    right: 50px;
+    top: 100px;
+}
+
+.choices{
+    position: relative;
+    top: 25px;
+}
+
+.floating-bar{
+    background-color: #E8F9FD;
+    height: 170px;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0;
+}

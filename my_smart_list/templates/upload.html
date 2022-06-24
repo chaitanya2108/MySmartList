@@ -70,8 +70,8 @@
   <br>
     <form method=post enctype=multipart/form-data>
         <!-- <button type="button" >Info</button> -->
-        <p><input class="btn btn-secondary" type=file name=file>
-        <input class="btn btn-secondary" type=submit value=Upload>
+        <p><input class="btn btn-outline-info" type=file name=file>
+        <input class="btn btn-outline-info" type=submit value=Upload>
     </form>
 <br>
    <h2>Your list items are:</h2>
@@ -89,12 +89,12 @@
   
  
     {% else %}
-     The extracted text will be displayed here
+     <p>The extracted text will be displayed here:</p>
     {% endif %}
     
     <!-- <a href="/display_items" class="btn btn-primary">Confirm list</a> -->
    
-    <button class="btn btn-info" onclick="window.location.href='/recommended-results'">View Choices</button>
+    <button class="choices btn btn-outline-info" onclick="window.location.href='/recommended-results'">View Choices</button>
 </div>
 </div>
 </section>
