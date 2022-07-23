@@ -13,6 +13,7 @@ from flask import Flask, redirect, render_template, request, session
 
 app = Flask(__name__)
 
+"""Amazon URL definition"""
 def get_url_amazon(search_term):
     """Generate URL with a search term"""
     template='https://www.amazon.in/s?k={}&ref=nb_sb_noss_1'
@@ -20,15 +21,14 @@ def get_url_amazon(search_term):
 
     #URL query
     url= template.format(search_term)
-
     url+= '&page{}'
 
     return url
 
+"""Amazon extract record"""
 def extract_record_amazon(item):
+
     """Extract and return data of single record"""
-
-
     #description and URL
     atag= item.h2.a
     description= atag.text.strip()
@@ -53,21 +53,22 @@ def extract_record_amazon(item):
     result= (description, price, rating, review_count, details_url,img,"Amazon")
     return result
 
+"""Amazon web scraping driver function"""
 def amazon(search_term):
-    """main"""
-    #start web driver
+    #start web driver for chrome browser
     driver = webdriver.Chrome(ChromeDriverManager().install())
 
     records=[]
     url= get_url_amazon(search_term)
 
+    #First page in amazon
     for page in range(1,2):
         driver.get(url.format(page))
         soup= BeautifulSoup(driver.page_source,'html.parser')
-        results= soup.find_all('div',{'data-component-type':'s-search-result'})
+        results= soup.find_all('div',{'data-component-type':'s-search-result'}) # find all results of items
 
         for item in results:
-            record=extract_record_amazon(item)
+            record= extract_record_amazon(item) #passing each item from the results
             if record:
                 records.append(record)
 
@@ -75,10 +76,10 @@ def amazon(search_term):
     #save data to csv file
     with open('results2.csv', 'w', newline='', encoding='utf-8') as f:
         writer = csv.writer(f)
-        writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url', 'Image src','Website_Name'])
+        writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url', 'Image src','Website_Name']) #column names for the data
         writer.writerows (records)
 
-
+"""Flipkart URL generate"""
 def get_url(search_term):
     """Generate URL with a search term"""
     template='http://www.flipkart.com/search?q={}&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=on&as=off'
@@ -86,12 +87,11 @@ def get_url(search_term):
 
     #URL query
     url= template.format(search_term)
-
-#     url+= '&page{}'
-
     return url
 
+"""Extraction of small cards type of record"""
 def extract_record_type1(item):
+    #image, description and details page URL
     try:
         atag= item.div.findChildren("a")[1]
         description= atag.text.strip()
@@ -99,11 +99,14 @@ def extract_record_type1(item):
         img= item.div.a.div.div.div.img.get('src')
     except IndexError:
         return None
+
+    #price extraction
     try:
         price= item.div.findChildren("a")[2].div.div.text.strip()
     except AttributeError:
         return "Price ERROR!"
 
+    #ratings details extraction
     try:
         rating_spans= item.findChildren("span")
         rating= rating_spans[0].div.text.strip()
@@ -116,6 +119,7 @@ def extract_record_type1(item):
     result= (description, price, rating, rating_count, details_url,img,"Flipkart" )
     return result
 
+"""Extraction of full screen cards type of record"""
 def extract_record_type2(actual_item):
     item=actual_item.div.a
     #details
@@ -128,11 +132,13 @@ def extract_record_type2(actual_item):
     except AttributeError:
         return None
 
+    #price extraction
     try:
         price= item.findChildren("div")[15].div.div.div.text.strip()
     except AttributeError:
         return "Price ERROR!"
 
+    #rating
     try:
         rating= item.findChildren("div")[12].span.div.text.strip()
         rating_count= item.findChildren("div")[12].findChildren("span")[1].span.span.text.strip()
@@ -144,11 +150,13 @@ def extract_record_type2(actual_item):
     result= (description, price, rating, rating_count, details_url,img,"Flipkart")
     return result
 
+"""Flipkart web scraping driver function"""
 def flipkart(search_term):
     driver = webdriver.Chrome(ChromeDriverManager().install())
     records=[]
     url= get_url(search_term)
     count=0
+
     for page in range(1,2):
         driver.get(url.format(page))
     #driver.get(url)
@@ -160,10 +168,9 @@ def flipkart(search_term):
                 # print(item.div.findChildren("a")[1])
                 # count+=1
                 record= extract_record_type1(item)
-
-
         except:
             record= extract_record_type2(item)
+
         # record= extract_record(item) if extract_record(item) is not None else None
         if record:
             records.append(record)
@@ -174,8 +181,9 @@ def flipkart(search_term):
         writer.writerow(['Description', 'Price', 'Rating', 'ReviewCount', 'Url', 'Image src','Website_Name'])
         writer.writerows (records)
 
+"""Consolidate the results from Amazon and Flipkart"""
 def consolidate():
-    # setting the path for joining multiple files
+    # setting the path for joining multiple files (CSV files for both amazon and flipkart)
     files = os.path.join("results*.csv")
 
     # list of merged files returned
@@ -188,18 +196,11 @@ def consolidate():
     df1 = df[df['Rating'].notna()]
     df1.to_csv('consolidated.csv')
     print(df1)
-  
 
+"""Driver function for entire web scrapping"""
 def webscraping(list):
-       #list = ['apple']
     print("webscraping", list)
-    
+
     flipkart(list)
     amazon(list)
     consolidate()
-        
-    # if list:
-    #     continue
-    # else:
-    #     break
-       
